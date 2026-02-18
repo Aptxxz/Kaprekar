@@ -4,39 +4,81 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Kaprekar 6174</title>
+
   <style>
-    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 24px auto; padding: 0 16px; }
-    input, button { font-size: 16px; padding: 10px 12px; }
+    body {
+      font-family: system-ui, sans-serif;
+      max-width: 720px;
+      margin: 24px auto;
+      padding: 0 16px;
+    }
+
+    input, button {
+      font-size: 16px;
+      padding: 10px 12px;
+    }
+
     button { cursor: pointer; }
-    .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+    .row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
     .hint { color: #444; margin-top: 10px; }
-    pre { background: #f5f5f5; padding: 12px; border-radius: 10px; overflow: auto; }
+
     .err { color: #b00020; font-weight: 600; }
+
+    /* Caja de resultados */
+    #out {
+      background: #f5f5f5;
+      padding: 12px;
+      border-radius: 10px;
+      overflow: auto;
+      line-height: 1.6;
+      word-break: break-word;
+      margin-top: 8px;
+    }
+
+    /* 6174 final destacado */
+    .k-final {
+      font-size: 1.6em;
+      font-weight: 800;
+    }
+
+    /* Mensaje final */
+    .k-msg {
+      margin-top: 10px;
+      font-weight: 700;
+    }
   </style>
 </head>
+
 <body>
+
   <h1>Constante de Kaprekar (6174)</h1>
 
-<p>
-<strong>¿Qué es el número 6174?</strong><br><br>
-El <strong>6174</strong>, conocido como la <strong>constante de Kaprekar</strong>, es un número
-sorprendente descubierto por el matemático indio D. R. Kaprekar.
-<br><br>
-Si tomas <strong>cualquier número de 4 cifras</strong> (que no tenga todas las cifras iguales)
-y repites este proceso:
-</p>
+  <p>
+    <strong>¿Qué es el número 6174?</strong><br><br>
+    El <strong>6174</strong>, conocido como la <strong>constante de Kaprekar</strong>,
+    es un número sorprendente descubierto por el matemático indio D. R. Kaprekar.
+    <br><br>
+    Si tomas <strong>cualquier número de 4 cifras</strong> (que no tenga todas las cifras iguales)
+    y repites este proceso:
+  </p>
 
-<ul>
-  <li>Ordenar sus cifras de mayor a menor</li>
-  <li>Ordenarlas de menor a mayor</li>
-  <li>Restar el número menor al mayor</li>
-</ul>
+  <ul>
+    <li>Ordenar sus cifras de mayor a menor</li>
+    <li>Ordenarlas de menor a mayor</li>
+    <li>Restar el número menor al mayor</li>
+  </ul>
 
-<p>
-En pocos pasos <strong>siempre terminarás llegando a 6174</strong>.<br>
-Prueba con cualquier número válido y observa cómo el proceso converge automáticamente.
-</p>
-
+  <p>
+    En pocos pasos <strong>siempre terminarás llegando a 6174</strong>.<br>
+    Prueba con cualquier número válido y observa cómo el proceso converge automáticamente.
+  </p>
 
   <div class="row">
     <input id="num" inputmode="numeric" maxlength="4" placeholder="Ej: 3524" />
@@ -48,7 +90,7 @@ Prueba con cualquier número válido y observa cómo el proceso converge automá
   <p id="msg" class="err"></p>
 
   <h2>Pasos</h2>
-  <pre id="out"></pre>
+  <div id="out"></div>
 
   <script>
     function esNumeroDe4Cifras(s) {
@@ -71,27 +113,34 @@ Prueba con cualquier número válido y observa cómo el proceso converge automá
       return s.split("").sort().reverse().join("");
     }
 
+    // 🔥 Nueva versión visual
     function kaprekarSteps(inputStr) {
-  let resultado = parseInt(inputStr, 10);
-  const lineas = [];
+      let resultado = parseInt(inputStr, 10);
+      const lineas = [];
 
-  do {
-    const s = pad4(resultado);
-    const menor = ordenarAsc(s);
-    const mayor = ordenarDesc(s);
+      do {
+        const s = pad4(resultado);
+        const menor = ordenarAsc(s);
+        const mayor = ordenarDesc(s);
 
-    const numMayor = parseInt(mayor, 10);
-    const numMenor = parseInt(menor, 10);
+        const numMayor = parseInt(mayor, 10);
+        const numMenor = parseInt(menor, 10);
 
-    resultado = numMayor - numMenor;
+        resultado = numMayor - numMenor;
 
-    lineas.push(`${mayor} - ${menor} = ${pad4(resultado)}`);
-  } while (resultado !== 6174);
+        if (resultado === 6174) {
+          lineas.push(
+            `${mayor} - ${menor} = <span class="k-final">6174</span>`
+          );
+        } else {
+          lineas.push(`${mayor} - ${menor} = ${pad4(resultado)}`);
+        }
 
-  lineas.push("✅ Se alcanzó la constante de Kaprekar: 6174");
-  return lineas;
-}
+      } while (resultado !== 6174);
 
+      lineas.push(`<div class="k-msg">Se alcanzó la constante de Kaprekar 😲</div>`);
+      return lineas;
+    }
 
     const $num = document.getElementById("num");
     const $run = document.getElementById("run");
@@ -102,26 +151,28 @@ Prueba con cualquier número válido y observa cómo el proceso converge automá
     function ejecutar() {
       const s = $num.value.trim();
       $msg.textContent = "";
-      $out.textContent = "";
+      $out.innerHTML = "";
 
       if (!esNumeroDe4Cifras(s)) {
         $msg.textContent = "Entrada inválida: debe ser un número de 4 cifras (solo dígitos).";
         return;
       }
+
       if (todasIguales(s)) {
         $msg.textContent = "No puede tener las 4 cifras iguales (1111, 2222, ...).";
         return;
       }
 
       const lineas = kaprekarSteps(s);
-      $out.textContent = lineas.join("\n");
+      $out.innerHTML = lineas.join("<br>");
     }
 
     $run.addEventListener("click", ejecutar);
+
     $clear.addEventListener("click", () => {
       $num.value = "";
       $msg.textContent = "";
-      $out.textContent = "";
+      $out.innerHTML = "";
       $num.focus();
     });
 
@@ -129,5 +180,6 @@ Prueba con cualquier número válido y observa cómo el proceso converge automá
       if (e.key === "Enter") ejecutar();
     });
   </script>
+
 </body>
 </html>
