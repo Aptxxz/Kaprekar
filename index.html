@@ -72,25 +72,26 @@ Prueba con cualquier número válido y observa cómo el proceso converge automá
     }
 
     function kaprekarSteps(inputStr) {
-      let resultado = parseInt(inputStr, 10);
-      const lineas = [];
+  let resultado = parseInt(inputStr, 10);
+  const lineas = [];
 
-      while (resultado !== 6174) {
-        const s = pad4(resultado);
-        const menor = ordenarAsc(s);
-        const mayor = ordenarDesc(s);
+  do {
+    const s = pad4(resultado);
+    const menor = ordenarAsc(s);
+    const mayor = ordenarDesc(s);
 
-        const numMayor = parseInt(mayor, 10);
-        const numMenor = parseInt(menor, 10);
+    const numMayor = parseInt(mayor, 10);
+    const numMenor = parseInt(menor, 10);
 
-        resultado = numMayor - numMenor;
+    resultado = numMayor - numMenor;
 
-        lineas.push(`${mayor} - ${menor} = ${pad4(resultado)}`);
-      }
+    lineas.push(`${mayor} - ${menor} = ${pad4(resultado)}`);
+  } while (resultado !== 6174);
 
-      lineas.push("✅ Se alcanzó la constante de Kaprekar: 6174");
-      return lineas;
-    }
+  lineas.push("✅ Se alcanzó la constante de Kaprekar: 6174");
+  return lineas;
+}
+
 
     const $num = document.getElementById("num");
     const $run = document.getElementById("run");
