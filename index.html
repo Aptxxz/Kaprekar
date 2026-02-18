@@ -309,10 +309,22 @@
         if (e.key === "Enter") ejecutar();
       });
 
-      $backTop.addEventListener("click", () => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-        $num.focus();
-      });
+ $backTop.addEventListener("click", () => {
+  $num.value = "";
+  $msg.textContent = "";
+  $out.innerHTML = "";
+  $stepsWrap.hidden = true;
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
+  setTimeout(() => {
+    $num.focus();
+    try { $num.setSelectionRange(0, 0); } catch (_) {}
+  }, 0);
+});
+
+
+
     </script>
   </main>
 </body>
