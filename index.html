@@ -6,6 +6,8 @@
   <title>Kaprekar 6174</title>
 
   <style>
+    /* ===== BASE ===== */
+
     body {
       font-family: system-ui, sans-serif;
       max-width: 720px;
@@ -15,8 +17,10 @@
       background: radial-gradient(circle at top, #1e293b, #020617 70%);
     }
 
-    h1 { font-size: clamp(22px, 4.8vw, 34px); }
-    
+    h1 {
+      font-size: clamp(22px, 4.8vw, 34px);
+    }
+
     main {
       background: rgba(255, 255, 255, 0.05);
       padding: 20px;
@@ -25,12 +29,14 @@
       margin: 16px 0;
     }
 
-    input, button {
+    input,
+    button {
       font-size: 16px;
       padding: 10px 12px;
     }
 
-    /* Layout */
+    /* ===== LAYOUT ===== */
+
     .row {
       display: flex;
       gap: 10px;
@@ -42,24 +48,25 @@
       flex: 1;
       min-width: 160px;
       border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.15);
-      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.06);
       color: #f5f5f5;
       outline: none;
     }
 
     #num::placeholder {
-      color: rgba(245,245,245,0.6);
+      color: rgba(245, 245, 245, 0.6);
     }
 
-    /* Botones */
+    /* ===== BOTONES ===== */
+
     button {
       cursor: pointer;
-      border: 1px solid rgba(255,255,255,0.15);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 12px;
-      background: rgba(255,255,255,0.08);
+      background: rgba(255, 255, 255, 0.08);
       color: #f5f5f5;
-      transition: transform .12s ease, filter .12s ease, background .12s ease;
+      transition: transform 0.12s ease, filter 0.12s ease, background 0.12s ease;
     }
 
     button:hover {
@@ -71,53 +78,54 @@
       transform: scale(0.98);
     }
 
-    /* Primario */
     #run {
-      background: linear-gradient(135deg, rgba(59,130,246,0.7), rgba(99,102,241,0.5));
-      border-color: rgba(59,130,246,0.6);
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.7), rgba(99, 102, 241, 0.5));
+      border-color: rgba(59, 130, 246, 0.6);
       font-weight: 700;
     }
 
-    /* Secundario */
     #clear {
-      background: rgba(255,255,255,0.06);
+      background: rgba(255, 255, 255, 0.06);
       opacity: 0.9;
     }
 
+    /* ===== BOTÓN BACKTOP ===== */
 
+    /* Oculto en PC */
+    #backTop {
+      display: none;
+    }
 
-/* Por defecto (PC) → oculto */
-#backTop{
-  display: none;
-}
+    .back-top {
+      margin-top: 14px;
+      width: 100%;
+      background: transparent;
+      border: 1px dashed rgba(255, 255, 255, 0.25);
+      opacity: 0.8;
+    }
 
-    /* Responsive móvil */
-@media (max-width: 420px){
-  .row { flex-wrap: wrap; }
-  #num { flex-basis: 100%; }
+    .back-top:hover {
+      opacity: 1;
+    }
 
-  #run { flex: 1 1 100%; }
+    /* ===== TEXTOS ===== */
 
-  #clear {
-    margin-left: auto;
-    width: auto;
-  }
+    .hint {
+      color: #aaa;
+      margin-top: 10px;
+    }
 
-  /* Botón volver arriba visible solo en móvil */
-  #backTop{
-    display: block;
-  }
-}
+    .err {
+      color: #ff6b6b;
+      font-weight: 600;
+    }
 
-
-
-    .hint { color: #aaa; margin-top: 10px; }
-    .err { color: #ff6b6b; font-weight: 600; }
-
-    [hidden] { display: none !important; }
+    [hidden] {
+      display: none !important;
+    }
 
     #out {
-      background: rgba(255,255,255,0.08);
+      background: rgba(255, 255, 255, 0.08);
       padding: 12px;
       border-radius: 10px;
       overflow: auto;
@@ -126,26 +134,26 @@
       margin-top: 8px;
     }
 
-    /* 6174 */
+    /* ===== 6174 ===== */
+
     .k-final {
       font-size: 1.6em;
       font-weight: 800;
       display: inline-block;
     }
 
-    /* Latido continuo */
     .k-pulse {
       animation: pulse6174 1.1s ease-in-out infinite;
     }
 
     @keyframes pulse6174 {
-      0%,100% { transform: scale(1); }
-      50%     { transform: scale(1.08); }
+      0%,
+      100% { transform: scale(1); }
+      50%  { transform: scale(1.08); }
     }
 
-    /* Mensaje final */
     .k-msg {
-      margin-top: 10px;
+      margin-top: 5px;
       font-weight: 700;
     }
 
@@ -154,7 +162,6 @@
       animation: fadeMsg 260ms ease-out;
     }
 
-    /* Solo pegamos el emoji al final (no se separa del texto) */
     .k-tail {
       white-space: nowrap;
     }
@@ -164,17 +171,39 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* Botón "volver arriba" */
-    .back-top{
-      margin-top: 14px;
-      width: 100%;
-      background: transparent;
-      border: 1px dashed rgba(255,255,255,0.25);
-      opacity: 0.8;
+    /* ===== RESPONSIVE MÓVIL ===== */
+
+    @media (max-width: 420px) {
+      .row { flex-wrap: wrap; }
+      #num { flex-basis: 100%; }
+
+      #run { flex: 1 1 100%; }
+
+      #clear {
+        margin-left: auto;
+        width: auto;
+      }
+
+      #backTop {
+        display: block;
+      }
     }
 
-    .back-top:hover{
-      opacity: 1;
+    /* ===== MEJORA VISUAL DESKTOP ===== */
+
+    @media (min-width: 900px) {
+      body {
+        background:
+          radial-gradient(900px circle at 50% 15%, #0f172a 0%, transparent 60%),
+          radial-gradient(700px circle at 85% 85%, #020617 0%, transparent 70%),
+          #020617;
+      }
+
+      main {
+        box-shadow:
+          0 0 140px rgba(59, 130, 246, 0.18),
+          0 0 60px rgba(99, 102, 241, 0.14);
+      }
     }
   </style>
 </head>
@@ -215,117 +244,115 @@
     <section id="stepsWrap" hidden>
       <h2>Pasos</h2>
       <div id="out"></div>
-
       <button id="backTop" type="button" class="back-top">↑ Probar otro número</button>
     </section>
-
-    <script>
-      function esNumeroDe4Cifras(s) {
-        return /^\d{4}$/.test(s);
-      }
-
-      function todasIguales(s) {
-        return s[0] === s[1] && s[1] === s[2] && s[2] === s[3];
-      }
-
-      function pad4(n) {
-        return String(n).padStart(4, "0");
-      }
-
-      function ordenarAsc(s) {
-        return s.split("").sort().join("");
-      }
-
-      function ordenarDesc(s) {
-        return s.split("").sort().reverse().join("");
-      }
-
-      function kaprekarSteps(inputStr) {
-        let resultado = parseInt(inputStr, 10);
-        const lineas = [];
-
-        do {
-          const s = pad4(resultado);
-          const menor = ordenarAsc(s);
-          const mayor = ordenarDesc(s);
-
-          resultado = parseInt(mayor, 10) - parseInt(menor, 10);
-
-          if (resultado === 6174) {
-            lineas.push(`${mayor} - ${menor} = <span class="k-final k-pulse">6174</span>`);
-          } else {
-            lineas.push(`${mayor} - ${menor} = ${pad4(resultado)}`);
-          }
-        } while (resultado !== 6174);
-
-        lineas.push(`<div class="k-msg k-fade">Se alcanzó la constante <span class="k-tail">de Kaprekar 😲</span></div>`);
-        return lineas;
-      }
-
-      const $num = document.getElementById("num");
-      const $run = document.getElementById("run");
-      const $clear = document.getElementById("clear");
-      const $out = document.getElementById("out");
-      const $msg = document.getElementById("msg");
-      const $stepsWrap = document.getElementById("stepsWrap");
-      const $backTop = document.getElementById("backTop");
-
-      function ejecutar() {
-        const s = $num.value.trim();
-        $msg.textContent = "";
-        $out.innerHTML = "";
-        $stepsWrap.hidden = true;
-
-        if (!esNumeroDe4Cifras(s)) {
-          $msg.textContent = "Entrada inválida.";
-          return;
-        }
-
-        if (todasIguales(s)) {
-          $msg.textContent = "Las 4 cifras no pueden ser iguales.";
-          return;
-        }
-
-        const lineas = kaprekarSteps(s);
-        $stepsWrap.hidden = false;
-        $out.innerHTML = lineas.join("<br>");
-
-        requestAnimationFrame(() => {
-          $stepsWrap.scrollIntoView({ behavior: "smooth", block: "start" });
-        });
-      }
-
-      $run.addEventListener("click", ejecutar);
-
-      $clear.addEventListener("click", () => {
-        $num.value = "";
-        $msg.textContent = "";
-        $out.innerHTML = "";
-        $stepsWrap.hidden = true;
-        $num.focus();
-      });
-
-      $num.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") ejecutar();
-      });
-
- $backTop.addEventListener("click", () => {
-  $num.value = "";
-  $msg.textContent = "";
-  $out.innerHTML = "";
-  $stepsWrap.hidden = true;
-
-  window.scrollTo({ top: 0, behavior: "smooth" });
-
-  setTimeout(() => {
-    $num.focus();
-    try { $num.setSelectionRange(0, 0); } catch (_) {}
-  }, 0);
-});
-
-
-
-    </script>
   </main>
+
+  <script>
+    function esNumeroDe4Cifras(s) {
+      return /^\d{4}$/.test(s);
+    }
+
+    function todasIguales(s) {
+      return s[0] === s[1] && s[1] === s[2] && s[2] === s[3];
+    }
+
+    function pad4(n) {
+      return String(n).padStart(4, "0");
+    }
+
+    function ordenarAsc(s) {
+      return s.split("").sort().join("");
+    }
+
+    function ordenarDesc(s) {
+      return s.split("").sort().reverse().join("");
+    }
+
+    function kaprekarSteps(inputStr) {
+      let resultado = parseInt(inputStr, 10);
+      const lineas = [];
+
+      do {
+        const s = pad4(resultado);
+        const menor = ordenarAsc(s);
+        const mayor = ordenarDesc(s);
+
+        resultado = parseInt(mayor, 10) - parseInt(menor, 10);
+
+        if (resultado === 6174) {
+          lineas.push(`${mayor} - ${menor} = <span class="k-final k-pulse">6174</span>`);
+        } else {
+          lineas.push(`${mayor} - ${menor} = ${pad4(resultado)}`);
+        }
+      } while (resultado !== 6174);
+
+      lineas.push(`<div class="k-msg k-fade">Se alcanzó la constante <span class="k-tail">de Kaprekar 😲</span></div>`);
+      return lineas;
+    }
+
+    const $num = document.getElementById("num");
+    const $run = document.getElementById("run");
+    const $clear = document.getElementById("clear");
+    const $out = document.getElementById("out");
+    const $msg = document.getElementById("msg");
+    const $stepsWrap = document.getElementById("stepsWrap");
+    const $backTop = document.getElementById("backTop");
+
+    function ejecutar() {
+      const s = $num.value.trim();
+
+      $msg.textContent = "";
+      $out.innerHTML = "";
+      $stepsWrap.hidden = true;
+
+      if (!esNumeroDe4Cifras(s)) {
+        $msg.textContent = "Entrada inválida.";
+        return;
+      }
+
+      if (todasIguales(s)) {
+        $msg.textContent = "Las 4 cifras no pueden ser iguales.";
+        return;
+      }
+
+      const lineas = kaprekarSteps(s);
+
+      $stepsWrap.hidden = false;
+      $out.innerHTML = lineas.join("<br>");
+
+      requestAnimationFrame(() => {
+        $stepsWrap.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
+
+    $run.addEventListener("click", ejecutar);
+
+    $clear.addEventListener("click", () => {
+      $num.value = "";
+      $msg.textContent = "";
+      $out.innerHTML = "";
+      $stepsWrap.hidden = true;
+      $num.focus();
+    });
+
+    $num.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") ejecutar();
+    });
+
+    $backTop.addEventListener("click", () => {
+      $num.value = "";
+      $msg.textContent = "";
+      $out.innerHTML = "";
+      $stepsWrap.hidden = true;
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      setTimeout(() => {
+        $num.focus();
+        try { $num.setSelectionRange(0, 0); } catch (_) {}
+      }, 0);
+    });
+  </script>
 </body>
 </html>
