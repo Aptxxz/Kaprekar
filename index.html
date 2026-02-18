@@ -84,18 +84,32 @@
       opacity: 0.9;
     }
 
+
+
+/* Por defecto (PC) → oculto */
+#backTop{
+  display: none;
+}
+
     /* Responsive móvil */
-    @media (max-width: 420px){
-      .row { flex-wrap: wrap; }
-      #num { flex-basis: 100%; }
+@media (max-width: 420px){
+  .row { flex-wrap: wrap; }
+  #num { flex-basis: 100%; }
 
-      #run { flex: 1 1 100%; }
+  #run { flex: 1 1 100%; }
 
-      #clear {
-        margin-left: auto;
-        width: auto;
-      }
-    }
+  #clear {
+    margin-left: auto;
+    width: auto;
+  }
+
+  /* Botón volver arriba visible solo en móvil */
+  #backTop{
+    display: block;
+  }
+}
+
+
 
     .hint { color: #aaa; margin-top: 10px; }
     .err { color: #ff6b6b; font-weight: 600; }
