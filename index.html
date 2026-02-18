@@ -6,197 +6,261 @@
   <title>Kaprekar 6174</title>
 
   <style>
-  body {
-    font-family: system-ui, sans-serif;
-    max-width: 720px;
-    margin: 24px auto;
-    padding: 0 16px;
-    color: #f5f5f5;
-    background: radial-gradient(circle at top, #1e293b, #020617 70%);
-  }
+    body {
+      font-family: system-ui, sans-serif;
+      max-width: 720px;
+      margin: 24px auto;
+      padding: 0 16px;
+      color: #f5f5f5;
+      background: radial-gradient(circle at top, #1e293b, #020617 70%);
+    }
 
-  input, button {
-    font-size: 16px;
-    padding: 10px 12px;
-  }
+    main {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      border-radius: 14px;
+      backdrop-filter: blur(6px);
+      margin: 16px 0;
+    }
 
-  button { cursor: pointer; }
+    input, button {
+      font-size: 16px;
+      padding: 10px 12px;
+    }
 
-  .row {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    flex-wrap: wrap;
-  }
+    /* Layout: input izquierda, botones derecha */
+    .row{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:nowrap;
+    }
 
-  .hint { color: #aaa; margin-top: 10px; }
-  .err { color: #ff6b6b; font-weight: 600; }
+    #num{
+      flex:1;
+      min-width: 160px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.06);
+      color: #f5f5f5;
+      outline: none;
+    }
 
-  #out {
-    background: rgba(255,255,255,0.08);
-    padding: 12px;
-    border-radius: 10px;
-    overflow: auto;
-    line-height: 1.6;
-    word-break: break-word;
-    margin-top: 8px;
-  }
+    #num::placeholder{ color: rgba(245,245,245,0.6); }
 
-  .k-final {
-    font-size: 1.6em;
-    font-weight: 800;
-  }
+    /* Botones: micro-animación hover/click */
+    button{
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.08);
+      color: #f5f5f5;
+      transition: transform .12s ease, filter .12s ease, background .12s ease, border-color .12s ease;
+      user-select: none;
+    }
 
-  .k-msg {
-  margin-top: 10px;
-  font-weight: 700;
+    button:hover{
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+    }
 
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+    button:active{
+      transform: translateY(0) scale(0.98);
+    }
 
-  white-space: nowrap;
-}
+    /* Calcular = primary */
+    #run{
+      background: linear-gradient(135deg, rgba(59,130,246,0.65), rgba(99,102,241,0.45));
+      border-color: rgba(59,130,246,0.55);
+      font-weight: 700;
+    }
 
+    /* Limpiar = secondary */
+    #clear{
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.16);
+      opacity: 0.92;
+    }
 
-  
-  main {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 20px;
-    border-radius: 14px;
-    backdrop-filter: blur(6px);
-    margin: 16px 0;
-  }
-</style>
+    /* Responsive: si no cabe, baja */
+    @media (max-width: 420px){
+      .row{ flex-wrap:wrap; }
+      #num{ flex-basis: 100%; }
+    }
 
+    .hint { color: #aaa; margin-top: 10px; }
+    .err { color: #ff6b6b; font-weight: 600; }
+
+    /* Caja de resultados */
+    #out {
+      background: rgba(255,255,255,0.08);
+      padding: 12px;
+      border-radius: 10px;
+      overflow: auto;
+      line-height: 1.6;
+      word-break: break-word;
+      margin-top: 8px;
+    }
+
+    /* 6174 final destacado */
+    .k-final {
+      font-size: 1.6em;
+      font-weight: 800;
+    }
+
+    /* Animación pop del 6174 */
+    .k-pop{
+      display:inline-block;
+      animation: pop6174 360ms ease-out both;
+    }
+
+    @keyframes pop6174{
+      0%   { transform: scale(0.88); opacity: 0; }
+      60%  { transform: scale(1.08); opacity: 1; }
+      100% { transform: scale(1.00); opacity: 1; }
+    }
+
+    /* Mensaje final: en una línea + fade */
+    .k-msg{
+      margin-top: 10px;
+      font-weight: 700;
+    }
+
+    .k-fade{
+      display:inline-flex;
+      align-items:center;
+      gap: 6px;
+      white-space: nowrap; /* evita que el emoji salte abajo */
+      animation: fadeMsg 260ms ease-out both;
+    }
+
+    @keyframes fadeMsg{
+      from { opacity: 0; transform: translateY(-2px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 
 <body>
   <main>
+    <h1>Constante de Kaprekar (6174)</h1>
 
-  <h1>Constante de Kaprekar (6174)</h1>
+    <p>
+      <strong>¿Qué es el número 6174?</strong><br><br>
+      El <strong>6174</strong>, conocido como la <strong>constante de Kaprekar</strong>,
+      es un número sorprendente descubierto por el matemático indio D. R. Kaprekar.
+      <br><br>
+      Si tomas <strong>cualquier número de 4 cifras</strong> (que no tenga todas las cifras iguales)
+      y repites este proceso:
+    </p>
 
-  <p>
-    <strong>¿Qué es el número 6174?</strong><br><br>
-    El <strong>6174</strong>, conocido como la <strong>constante de Kaprekar</strong>,
-    es un número sorprendente descubierto por el matemático indio D. R. Kaprekar.
-    <br><br>
-    Si tomas <strong>cualquier número de 4 cifras</strong> (que no tenga todas las cifras iguales)
-    y repites este proceso:
-  </p>
+    <ul>
+      <li>Ordenar sus cifras de mayor a menor</li>
+      <li>Ordenarlas de menor a mayor</li>
+      <li>Restar el número menor al mayor</li>
+    </ul>
 
-  <ul>
-    <li>Ordenar sus cifras de mayor a menor</li>
-    <li>Ordenarlas de menor a mayor</li>
-    <li>Restar el número menor al mayor</li>
-  </ul>
+    <p>
+      En pocos pasos <strong>siempre terminarás llegando a 6174</strong>.<br>
+      Prueba con cualquier número válido y observa cómo el proceso converge automáticamente.
+    </p>
 
-  <p>
-    En pocos pasos <strong>siempre terminarás llegando a 6174</strong>.<br>
-    Prueba con cualquier número válido y observa cómo el proceso converge automáticamente.
-  </p>
+    <div class="row">
+      <input id="num" inputmode="numeric" maxlength="4" placeholder="Ej: 3524" />
+      <button id="run">Calcular</button>
+      <button id="clear" type="button">Limpiar</button>
+    </div>
 
-  <div class="row">
-    <input id="num" inputmode="numeric" maxlength="4" placeholder="Ej: 3524" />
-    <button id="run">Calcular</button>
-    <button id="clear" type="button">Limpiar</button>
-  </div>
+    <p class="hint">Introduce un número de 4 cifras (solo dígitos). No puede tener las 4 cifras iguales.</p>
+    <p id="msg" class="err"></p>
 
-  <p class="hint">Introduce un número de 4 cifras (solo dígitos). No puede tener las 4 cifras iguales.</p>
-  <p id="msg" class="err"></p>
+    <h2>Pasos</h2>
+    <div id="out"></div>
 
-  <h2>Pasos</h2>
-  <div id="out"></div>
+    <script>
+      function esNumeroDe4Cifras(s) {
+        return /^\d{4}$/.test(s);
+      }
 
-  <script>
-    function esNumeroDe4Cifras(s) {
-      return /^\d{4}$/.test(s);
-    }
+      function todasIguales(s) {
+        return s[0] === s[1] && s[1] === s[2] && s[2] === s[3];
+      }
 
-    function todasIguales(s) {
-      return s[0] === s[1] && s[1] === s[2] && s[2] === s[3];
-    }
+      function pad4(n) {
+        return String(n).padStart(4, "0");
+      }
 
-    function pad4(n) {
-      return String(n).padStart(4, "0");
-    }
+      function ordenarAsc(s) {
+        return s.split("").sort().join("");
+      }
 
-    function ordenarAsc(s) {
-      return s.split("").sort().join("");
-    }
+      function ordenarDesc(s) {
+        return s.split("").sort().reverse().join("");
+      }
 
-    function ordenarDesc(s) {
-      return s.split("").sort().reverse().join("");
-    }
+      function kaprekarSteps(inputStr) {
+        let resultado = parseInt(inputStr, 10);
+        const lineas = [];
 
-    // 🔥 Nueva versión visual
-    function kaprekarSteps(inputStr) {
-      let resultado = parseInt(inputStr, 10);
-      const lineas = [];
+        do {
+          const s = pad4(resultado);
+          const menor = ordenarAsc(s);
+          const mayor = ordenarDesc(s);
 
-      do {
-        const s = pad4(resultado);
-        const menor = ordenarAsc(s);
-        const mayor = ordenarDesc(s);
+          const numMayor = parseInt(mayor, 10);
+          const numMenor = parseInt(menor, 10);
 
-        const numMayor = parseInt(mayor, 10);
-        const numMenor = parseInt(menor, 10);
+          resultado = numMayor - numMenor;
 
-        resultado = numMayor - numMenor;
+          if (resultado === 6174) {
+            lineas.push(`${mayor} - ${menor} = <span class="k-final k-pop">6174</span>`);
+          } else {
+            lineas.push(`${mayor} - ${menor} = ${pad4(resultado)}`);
+          }
+        } while (resultado !== 6174);
 
-        if (resultado === 6174) {
-          lineas.push(
-            `${mayor} - ${menor} = <span class="k-final">6174</span>`
-          );
-        } else {
-          lineas.push(`${mayor} - ${menor} = ${pad4(resultado)}`);
+        lineas.push(`<div class="k-msg k-fade">Se alcanzó la constante de Kaprekar 😲</div>`);
+        return lineas;
+      }
+
+      const $num = document.getElementById("num");
+      const $run = document.getElementById("run");
+      const $clear = document.getElementById("clear");
+      const $out = document.getElementById("out");
+      const $msg = document.getElementById("msg");
+
+      function ejecutar() {
+        const s = $num.value.trim();
+        $msg.textContent = "";
+        $out.innerHTML = "";
+
+        if (!esNumeroDe4Cifras(s)) {
+          $msg.textContent = "Entrada inválida: debe ser un número de 4 cifras (solo dígitos).";
+          return;
         }
 
-      } while (resultado !== 6174);
+        if (todasIguales(s)) {
+          $msg.textContent = "No puede tener las 4 cifras iguales (1111, 2222, ...).";
+          return;
+        }
 
-      lineas.push(`<div class="k-msg">Se alcanzó la constante de Kaprekar 😲</div>`);
-      return lineas;
-    }
-
-    const $num = document.getElementById("num");
-    const $run = document.getElementById("run");
-    const $clear = document.getElementById("clear");
-    const $out = document.getElementById("out");
-    const $msg = document.getElementById("msg");
-
-    function ejecutar() {
-      const s = $num.value.trim();
-      $msg.textContent = "";
-      $out.innerHTML = "";
-
-      if (!esNumeroDe4Cifras(s)) {
-        $msg.textContent = "Entrada inválida: debe ser un número de 4 cifras (solo dígitos).";
-        return;
+        const lineas = kaprekarSteps(s);
+        $out.innerHTML = lineas.join("<br>");
       }
 
-      if (todasIguales(s)) {
-        $msg.textContent = "No puede tener las 4 cifras iguales (1111, 2222, ...).";
-        return;
-      }
+      $run.addEventListener("click", ejecutar);
 
-      const lineas = kaprekarSteps(s);
-      $out.innerHTML = lineas.join("<br>");
-    }
+      $clear.addEventListener("click", () => {
+        $num.value = "";
+        $msg.textContent = "";
+        $out.innerHTML = "";
+        $num.focus();
+      });
 
-    $run.addEventListener("click", ejecutar);
-
-    $clear.addEventListener("click", () => {
-      $num.value = "";
-      $msg.textContent = "";
-      $out.innerHTML = "";
-      $num.focus();
-    });
-
-    $num.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") ejecutar();
-    });
-  </script>
-  
-</main>
+      $num.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") ejecutar();
+      });
+    </script>
+  </main>
 </body>
 </html>
