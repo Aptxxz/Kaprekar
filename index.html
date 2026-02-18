@@ -6,57 +6,66 @@
   <title>Kaprekar 6174</title>
 
   <style>
-    body {
-      font-family: system-ui, sans-serif;
-      max-width: 720px;
-      margin: 24px auto;
-      padding: 0 16px;
-    }
+  body {
+    font-family: system-ui, sans-serif;
+    max-width: 720px;
+    margin: 24px auto;
+    padding: 0 16px;
+    color: #f5f5f5;
+    background: radial-gradient(circle at top, #1e293b, #020617 70%);
+  }
 
-    input, button {
-      font-size: 16px;
-      padding: 10px 12px;
-    }
+  input, button {
+    font-size: 16px;
+    padding: 10px 12px;
+  }
 
-    button { cursor: pointer; }
+  button { cursor: pointer; }
 
-    .row {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
+  .row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
 
-    .hint { color: #444; margin-top: 10px; }
+  .hint { color: #aaa; margin-top: 10px; }
+  .err { color: #ff6b6b; font-weight: 600; }
 
-    .err { color: #b00020; font-weight: 600; }
+  #out {
+    background: rgba(255,255,255,0.08);
+    padding: 12px;
+    border-radius: 10px;
+    overflow: auto;
+    line-height: 1.6;
+    word-break: break-word;
+    margin-top: 8px;
+  }
 
-    /* Caja de resultados */
-    #out {
-      background: #f5f5f5;
-      padding: 12px;
-      border-radius: 10px;
-      overflow: auto;
-      line-height: 1.6;
-      word-break: break-word;
-      margin-top: 8px;
-    }
+  .k-final {
+    font-size: 1.6em;
+    font-weight: 800;
+  }
 
-    /* 6174 final destacado */
-    .k-final {
-      font-size: 1.6em;
-      font-weight: 800;
-    }
+  .k-msg {
+    margin-top: 10px;
+    font-weight: 700;
+  }
 
-    /* Mensaje final */
-    .k-msg {
-      margin-top: 10px;
-      font-weight: 700;
-    }
-  </style>
+  
+  main {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 14px;
+    backdrop-filter: blur(6px);
+    margin: 16px 0;
+  }
+</style>
+
 </head>
 
 <body>
+  <main>
 
   <h1>Constante de Kaprekar (6174)</h1>
 
@@ -180,6 +189,7 @@
       if (e.key === "Enter") ejecutar();
     });
   </script>
-
+  
+</main>
 </body>
 </html>
