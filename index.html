@@ -15,6 +15,8 @@
       background: radial-gradient(circle at top, #1e293b, #020617 70%);
     }
 
+    h1 { font-size: clamp(22px, 4.8vw, 34px); }
+    
     main {
       background: rgba(255, 255, 255, 0.05);
       padding: 20px;
@@ -98,6 +100,8 @@
     .hint { color: #aaa; margin-top: 10px; }
     .err { color: #ff6b6b; font-weight: 600; }
 
+    [hidden] { display: none !important; }
+
     #out {
       background: rgba(255,255,255,0.08);
       padding: 12px;
@@ -113,17 +117,6 @@
       font-size: 1.6em;
       font-weight: 800;
       display: inline-block;
-    }
-
-    /* POP inicial */
-    .k-pop {
-      animation: pop6174 360ms ease-out;
-    }
-
-    @keyframes pop6174 {
-      0%   { transform: scale(0.85); opacity: 0; }
-      60%  { transform: scale(1.1); opacity: 1; }
-      100% { transform: scale(1); }
     }
 
     /* Latido continuo */
@@ -143,16 +136,31 @@
     }
 
     .k-fade {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      white-space: nowrap;
+      display: inline-block;
       animation: fadeMsg 260ms ease-out;
+    }
+
+    /* Solo pegamos el emoji al final (no se separa del texto) */
+    .k-tail {
+      white-space: nowrap;
     }
 
     @keyframes fadeMsg {
       from { opacity: 0; transform: translateY(-2px); }
       to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Botón "volver arriba" */
+    .back-top{
+      margin-top: 14px;
+      width: 100%;
+      background: transparent;
+      border: 1px dashed rgba(255,255,255,0.25);
+      opacity: 0.8;
+    }
+
+    .back-top:hover{
+      opacity: 1;
     }
   </style>
 </head>
@@ -162,25 +170,24 @@
     <h1>Constante de Kaprekar (6174)</h1>
 
     <p>
-  <strong>¿Qué es el número 6174?</strong><br><br>
-  El <strong>6174</strong>, conocido como la <strong>constante de Kaprekar</strong>, es un número
-  sorprendente descubierto por el matemático indio D. R. Kaprekar.
-  <br><br>
-  Si tomas <strong>cualquier número de 4 cifras</strong> (que no tenga todas las cifras iguales)
-  y repites este proceso:
-</p>
+      <strong>¿Qué es el número 6174?</strong><br><br>
+      El <strong>6174</strong>, conocido como la <strong>constante de Kaprekar</strong>, es un número
+      sorprendente descubierto por el matemático indio D. R. Kaprekar.
+      <br><br>
+      Si tomas <strong>cualquier número de 4 cifras</strong> (que no tenga todas las cifras iguales)
+      y repites este proceso:
+    </p>
 
-<ul>
-  <li>Ordenar sus cifras de mayor a menor</li>
-  <li>Ordenarlas de menor a mayor</li>
-  <li>Restar el número menor al mayor</li>
-</ul>
+    <ul>
+      <li>Ordenar sus cifras de mayor a menor</li>
+      <li>Ordenarlas de menor a mayor</li>
+      <li>Restar el número menor al mayor</li>
+    </ul>
 
-<p>
-  En pocos pasos <strong>siempre terminarás llegando a 6174</strong>.<br>
-  Prueba con cualquier número válido y observa cómo el proceso converge automáticamente.
-</p>
-
+    <p>
+      En pocos pasos <strong>siempre terminarás llegando a 6174</strong>.<br>
+      Prueba con cualquier número válido y observa cómo el proceso converge automáticamente.
+    </p>
 
     <div class="row">
       <input id="num" inputmode="numeric" maxlength="4" placeholder="Ej: 3524" />
@@ -191,8 +198,12 @@
     <p class="hint">Introduce un número de 4 cifras (solo dígitos).</p>
     <p id="msg" class="err"></p>
 
-    <h2>Pasos</h2>
-    <div id="out"></div>
+    <section id="stepsWrap" hidden>
+      <h2>Pasos</h2>
+      <div id="out"></div>
+
+      <button id="backTop" type="button" class="back-top">↑ Probar otro número</button>
+    </section>
 
     <script>
       function esNumeroDe4Cifras(s) {
@@ -233,7 +244,7 @@
           }
         } while (resultado !== 6174);
 
-        lineas.push(`<div class="k-msg k-fade">Se alcanzó la constante de Kaprekar 😲</div>`);
+        lineas.push(`<div class="k-msg k-fade">Se alcanzó la constante <span class="k-tail">de Kaprekar 😲</span></div>`);
         return lineas;
       }
 
@@ -242,11 +253,14 @@
       const $clear = document.getElementById("clear");
       const $out = document.getElementById("out");
       const $msg = document.getElementById("msg");
+      const $stepsWrap = document.getElementById("stepsWrap");
+      const $backTop = document.getElementById("backTop");
 
       function ejecutar() {
         const s = $num.value.trim();
         $msg.textContent = "";
         $out.innerHTML = "";
+        $stepsWrap.hidden = true;
 
         if (!esNumeroDe4Cifras(s)) {
           $msg.textContent = "Entrada inválida.";
@@ -259,7 +273,12 @@
         }
 
         const lineas = kaprekarSteps(s);
+        $stepsWrap.hidden = false;
         $out.innerHTML = lineas.join("<br>");
+
+        requestAnimationFrame(() => {
+          $stepsWrap.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
       }
 
       $run.addEventListener("click", ejecutar);
@@ -268,11 +287,17 @@
         $num.value = "";
         $msg.textContent = "";
         $out.innerHTML = "";
+        $stepsWrap.hidden = true;
         $num.focus();
       });
 
       $num.addEventListener("keydown", (e) => {
         if (e.key === "Enter") ejecutar();
+      });
+
+      $backTop.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        $num.focus();
       });
     </script>
   </main>
